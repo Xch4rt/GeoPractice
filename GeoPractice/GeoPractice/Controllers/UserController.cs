@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GeoPractice.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace GeoPractice.Controllers
 {
@@ -10,25 +12,35 @@ namespace GeoPractice.Controllers
         [HttpGet("GetUsers")]
         public IActionResult GetUsers()
         {
-            return Ok();
+            var users = GetUser();
+            return Ok(users);
         }
 
         [HttpPost("CreateUser")]
-        public IActionResult CreateUser()
+        public IActionResult CreateUser([FromBody] UserRequest userRequest)
         { 
             return Ok();
         }
 
         [HttpPut("UpdateUser")]
-        public IActionResult UpdateUser()
+        public IActionResult UpdateUser([FromBody] UserRequest userRequest)
         {
             return Ok();
         }
 
-        [HttpDelete("DeleteUser")]
-        public IActionResult DeleteUser()
+        [HttpDelete("DeleteUser/{IdUser}")]
+        public IActionResult DeleteUser(int IdUser)
         { 
             return Ok();
+        }
+
+
+        private List<UserRequest> GetUser()
+        {
+            return new List<UserRequest>
+            {
+                new UserRequest { UserName = "Pablo.Net", DateBirthday = "06/02/03", Id = 1, Password = "12345", RFC = "00000000000"}
+            };
         }
     }
 }
