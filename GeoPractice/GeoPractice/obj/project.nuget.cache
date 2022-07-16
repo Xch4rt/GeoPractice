@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "p/IY39K7nKum2hU01E66MpeK/6qoYj43pv6y+Lud3ocH9k2tTgM90h/GMf/F+zqXsMXPvhh0juwMEDJQS+wb7g==",
+  "success": true,
+  "projectFilePath": "E:\\Nuevo Usuario\\Documents\\Proyectos\\GeoPractice\\GeoPractice\\GeoPractice\\GeoPractice.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nuevo Usuario\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.13\\microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}
