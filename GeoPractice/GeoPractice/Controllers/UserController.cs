@@ -1,7 +1,10 @@
-﻿using GeoPractice.Models;
+﻿using GeoPractice.Data;
+using GeoPractice.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoPractice.Controllers
 {
@@ -9,11 +12,24 @@ namespace GeoPractice.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private GeoDBContext _dbContext;
+
+        public UserController(GeoDBContext geoDBContext)
+        {
+            _dbContext = geoDBContext;
+        }
+
         [HttpGet("GetUsers")]
         public IActionResult GetUsers()
         {
-            var users = GetUser();
-            return Ok(users);
+            try {
+                var users = _dbContext.Usuario.ToList();
+
+                return (users.Count == 0) ? StatusCode(404, "No users found") : Ok(users);
+            }
+            catch (Exception e) { Console.WriteLine( e.ToString()); return StatusCode(500, "Oops, an errors has ocurred :("); }
+
+            //return Ok();
         }
 
         [HttpPost("CreateUser")]
