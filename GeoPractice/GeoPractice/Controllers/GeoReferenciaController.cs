@@ -33,30 +33,37 @@ namespace GeoPractice.Controllers
         }
 
         [HttpPost("CreateGeodata")]
-        public IActionResult CreateGeodata([FromBody] UserRequest userRequest)
+        public IActionResult CreateGeodata([FromBody] GeoReferenciasRequest geoRequest)
         {
-            return Ok();
+            tblGeodata geoData = new tblGeodata();
+            geoData.IdEstado = geoRequest.IdEstado;
+            geoData.Latitud = geoRequest.Latitud;
+            geoData.Longitud = geoRequest.Longitud;
+            
+
+            try {
+                _dbContext.Add(geoData);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception) { return StatusCode(500, "An error has ocurred:("); }
+
+            var geoDatas = _dbContext.GeorReferencia.ToList();
+            return Ok(geoDatas);
         }
 
         [HttpPut("UpdateGeodata")]
-        public IActionResult UpdateGeodata([FromBody] UserRequest userRequest)
+        public IActionResult UpdateGeodata([FromBody] GeoReferenciasRequest geoRequest)
         {
             return Ok();
         }
 
         [HttpDelete("DeleteGeodata/{IdGeodata}")]
-        public IActionResult DeleteGeodata(int IdUser)
+        public IActionResult DeleteGeodata(int IdGeo)
         {
             return Ok();
         }
 
 
-        private List<UserRequest> GetUser()
-        {
-            return new List<UserRequest>
-            {
-                new UserRequest { UserName = "Pablo.Net", DateBirthday = "06/02/03", Id = 1, Password = "12345", RFC = "00000000000"}
-            };
-        }
+        
     }
 }

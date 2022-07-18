@@ -7,7 +7,7 @@ namespace GeoPractice.Data
         public GeoDBContext(DbContextOptions<GeoDBContext> options) : base(options)
         { }
 
-       public DbSet<tblUser> Usuario { get; set; }
+        public DbSet<tblUser> Usuario { get; set; }
 
         public DbSet<tblGeodata> GeorReferencia { get; set; }
     }

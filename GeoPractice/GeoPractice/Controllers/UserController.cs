@@ -2,6 +2,7 @@
 using GeoPractice.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,28 +36,66 @@ namespace GeoPractice.Controllers
         [HttpPost("CreateUser")]
         public IActionResult CreateUser([FromBody] UserRequest userRequest)
         { 
-            return Ok();
+            tblUser user = new tblUser();
+            user.Contraseña = userRequest.Password;
+            user.Nombre = userRequest.UserName;
+            user.FechaNacimiento = userRequest.DateBirthday;
+            user.RFC = userRequest.RFC;
+
+            try 
+            { 
+                _dbContext.Add(user);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception) { return StatusCode(500, "An error has ocurred:("); }
+
+            var users = _dbContext.Usuario.ToList();
+            return Ok(users);
         }
 
         [HttpPut("UpdateUser")]
         public IActionResult UpdateUser([FromBody] UserRequest userRequest)
         {
-            return Ok();
+            try 
+            {
+                var user = _dbContext.Usuario.FirstOrDefault(x => x.IdUsuario == userRequest.Id);
+
+                if (user == null) { return StatusCode(404, "User not found"); }
+
+                user.Contraseña = userRequest.Password;
+                user.Nombre = userRequest.UserName;
+                user.FechaNacimiento = userRequest.DateBirthday;
+                user.RFC = userRequest.RFC;
+
+                _dbContext.Entry(user).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+
+            }
+            catch (Exception) { return StatusCode(500, "An error has ocurred:("); }
+
+            var users = _dbContext.Usuario.ToList();
+            return Ok(users);
         }
 
         [HttpDelete("DeleteUser/{IdUser}")]
-        public IActionResult DeleteUser(int IdUser)
-        { 
-            return Ok();
-        }
-
-
-        private List<UserRequest> GetUser()
+        public IActionResult DeleteUser([FromRoute] int IdUser)
         {
-            return new List<UserRequest>
+            try 
             {
-                new UserRequest { UserName = "Pablo.Net", DateBirthday = "06/02/03", Id = 1, Password = "12345", RFC = "00000000000"}
-            };
+                var user = _dbContext.Usuario.FirstOrDefault(x => x.IdUsuario == IdUser);
+
+                if (user == null) { return StatusCode(404, "User not found"); }
+
+                _dbContext.Entry(user).State = EntityState.Deleted;
+                _dbContext.SaveChanges();
+            }
+            catch (Exception) { return StatusCode(500, "An error has ocurred:("); }
+
+            var users = _dbContext.Usuario.ToList();
+            return Ok(users);
         }
+
+
+        
     }
 }
