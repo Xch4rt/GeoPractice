@@ -10,5 +10,7 @@ namespace GeoPractice.Data
         public DbSet<tblUser> Usuario { get; set; }
 
         public DbSet<tblGeodata> GeorReferencia { get; set; }
+
+        public DbSet<tblUrl> UrlShort { get; set;}
     }
 }
